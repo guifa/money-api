@@ -18,40 +18,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.guifa.money.api.event.CreatedResourceEvent;
-import com.guifa.money.api.model.Category;
-import com.guifa.money.api.repository.CategoryRepository;
+import com.guifa.money.api.model.Customer;
+import com.guifa.money.api.repository.CustomerRepository;
 
 @RestController
-@RequestMapping("/categories")
-public class CategoryResource {
+@RequestMapping("/customers")
+public class CustomerResource {
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CustomerRepository customerRepository;
 	
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 	
 	@GetMapping
-	public ResponseEntity<List<Category>> list() {
-		List<Category> categories = categoryRepository.findAll();
+	public ResponseEntity<List<Customer>> list() {
+		List<Customer> customers = customerRepository.findAll();
 		
-		return ResponseEntity.ok(categories);
+		return ResponseEntity.ok(customers);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Category> create(@Valid @RequestBody Category category, HttpServletResponse response) {
-		Category savedCategory = categoryRepository.save(category);
+	public ResponseEntity<Customer> create(@Valid @RequestBody Customer customer, HttpServletResponse response) {
+		Customer savedCustomer = customerRepository.save(customer);
 		
-		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, savedCategory.getId()));
+		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, savedCustomer.getId()));
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Category>> findById(@PathVariable Long id) {
-		Optional<Category> optionalCategory = categoryRepository.findById(id);
+	public ResponseEntity<Optional<Customer>> findById(@PathVariable Long id) {
+		Optional<Customer> optionalCustomer = customerRepository.findById(id);
 		
-		return optionalCategory.isPresent() ? ResponseEntity.ok(optionalCategory) : ResponseEntity.notFound().build();
+		return optionalCustomer.isPresent() ? ResponseEntity.ok(optionalCustomer) : ResponseEntity.notFound().build();
 	}
 
 }
