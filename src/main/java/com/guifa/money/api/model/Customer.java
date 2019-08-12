@@ -25,6 +25,7 @@ public class Customer {
 	@Size(min = 3, max = 50)
 	private String name;
 	
+	@NotNull
 	private boolean active;
 	
 	@OneToOne(cascade = CascadeType.ALL)
