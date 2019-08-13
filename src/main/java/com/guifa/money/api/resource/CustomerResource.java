@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.guifa.money.api.event.CreatedResourceEvent;
 import com.guifa.money.api.model.Customer;
-import com.guifa.money.api.repository.CustomerRepository;
 import com.guifa.money.api.service.CustomerService;
 
 @RestController
@@ -29,26 +26,18 @@ import com.guifa.money.api.service.CustomerService;
 public class CustomerResource {
 	
 	@Autowired
-	private CustomerRepository customerRepository;
-	
-	@Autowired
 	private CustomerService customerService;
 	
-	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
-	
 	@GetMapping
-	public ResponseEntity<List<Customer>> list() {
-		List<Customer> customers = customerRepository.findAll();
+	public ResponseEntity<List<Customer>> findAll() {
+		List<Customer> customers = customerService.findAll();
 		
 		return ResponseEntity.ok(customers);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Customer> create(@Valid @RequestBody Customer customer, HttpServletResponse response) {
-		Customer savedCustomer = customerRepository.save(customer);
-		
-		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, savedCustomer.getId()));
+	public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer, HttpServletResponse response) {
+		Customer savedCustomer = customerService.save(customer, response);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
 	}
@@ -62,8 +51,8 @@ public class CustomerResource {
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
-		customerRepository.deleteById(id);
+	public void deleteById(@PathVariable Long id) {
+		customerService.deleteById(id);
 	}
 	
 	@PutMapping("/{id}")
