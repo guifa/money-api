@@ -26,7 +26,7 @@ public class Customer {
 	private String name;
 	
 	@NotNull
-	private boolean active;
+	private Boolean activeStatus;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -56,12 +56,12 @@ public class Customer {
 		this.name = name;
 	}
 
-	public boolean isActive() {
-		return active;
+	public Boolean isActiveStatus() {
+		return activeStatus;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setActive(Boolean activeStatus) {
+		this.activeStatus = activeStatus;
 	}
 
 	public Address getAddress() {
@@ -76,7 +76,7 @@ public class Customer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (active ? 1231 : 1237);
+		result = prime * result + (activeStatus ? 1231 : 1237);
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -92,7 +92,7 @@ public class Customer {
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		if (active != other.active)
+		if (activeStatus != other.activeStatus)
 			return false;
 		if (address == null) {
 			if (other.address != null)
