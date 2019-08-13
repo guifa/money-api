@@ -13,7 +13,7 @@ CREATE TABLE address (
 CREATE TABLE customer (
 	id BIGINT(20) AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
-    active BOOLEAN,
+    active BOOLEAN NOT NULL,
     address_id BIGINT(20) UNIQUE,
     PRIMARY KEY(id),
     FOREIGN KEY(address_id) REFERENCES address(id)
