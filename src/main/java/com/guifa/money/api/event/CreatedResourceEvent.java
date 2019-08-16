@@ -14,10 +14,10 @@ public class CreatedResourceEvent extends ApplicationEvent{
 	private HttpServletResponse response;
 	private Long resourceId;
 	
-	public CreatedResourceEvent(Object source, HttpServletResponse response, Long id) {
+	public CreatedResourceEvent(Object source, HttpServletResponse response, Long resourceId) {
 		super(source);
 		this.response = response;
-		this.resourceId = id;
+		this.resourceId = resourceId;
 	}
 
 	public static long getSerialversionuid() {
