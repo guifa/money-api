@@ -29,9 +29,11 @@ public class TransactionService {
 	}
 	
 	public Transaction save(Transaction transaction, HttpServletResponse response) {
-		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, transaction.getId()));
+		Transaction savedTransaction = transactionRepository.save(transaction);
+
+		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, savedTransaction.getId()));
 		
-		return transactionRepository.save(transaction);
+		return savedTransaction;
 	}
 	
 	public Transaction findById(Long id) {

@@ -29,9 +29,11 @@ public class CustomerService {
 	}
 	
 	public Customer save(Customer customer, HttpServletResponse response) {
-		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, customer.getId()));
+		Customer savedCustomer = customerRepository.save(customer);
 		
-		return customerRepository.save(customer);
+		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, savedCustomer.getId()));
+		
+		return savedCustomer;
 	}
 	
 	public Customer findById(Long id) {

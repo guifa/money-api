@@ -29,9 +29,11 @@ public class CategoryService {
 	}
 
 	public Category save(Category category, HttpServletResponse response) {
-		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, category.getId()));
+		Category savedCategory = categoryRepository.save(category);
+
+		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, savedCategory.getId()));
 		
-		return categoryRepository.save(category);
+		return savedCategory;
 	}
 
 	public Category findById(Long id) {
