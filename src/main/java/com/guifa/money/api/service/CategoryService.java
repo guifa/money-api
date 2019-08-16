@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class CategoryService {
 		return categoryRepository.findAll();
 	}
 
-	public Category save(@Valid Category category, HttpServletResponse response) {
+	public Category save(Category category, HttpServletResponse response) {
 		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, category.getId()));
 		
 		return categoryRepository.save(category);

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class CustomerService {
 		return customerRepository.findAll();
 	}
 	
-	public Customer save(@Valid Customer customer, HttpServletResponse response) {
+	public Customer save(Customer customer, HttpServletResponse response) {
 		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, customer.getId()));
 		
 		return customerRepository.save(customer);
