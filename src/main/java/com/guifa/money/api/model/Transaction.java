@@ -39,10 +39,12 @@ public class Transaction {
 	@Enumerated(EnumType.STRING)
 	private TransactionType type;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
