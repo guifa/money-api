@@ -8,12 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.guifa.money.api.event.CreatedResourceEvent;
+import com.guifa.money.api.model.Customer;
 import com.guifa.money.api.model.Transaction;
 import com.guifa.money.api.repository.TransactionRepository;
+import com.guifa.money.api.service.exception.InactiveCustomerException;
 
 @Service
 public class TransactionService {
@@ -24,11 +28,23 @@ public class TransactionService {
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 	
+	@Autowired
+	private CustomerService customerService;
+	
+	@Autowired
+	private MessageSource messageSource;
+	
 	public List<Transaction> findAll() {
 		return transactionRepository.findAll();
 	}
 	
 	public Transaction save(Transaction transaction, HttpServletResponse response) {
+		Customer customer = customerService.findById(transaction.getCustomer().getId());
+		
+		if (customer.isInactive()) {
+			throw new InactiveCustomerException(messageSource.getMessage("customer.isInactive", null, LocaleContextHolder.getLocale()));
+		}
+		
 		Transaction savedTransaction = transactionRepository.save(transaction);
 
 		applicationEventPublisher.publishEvent(new CreatedResourceEvent(this, response, savedTransaction.getId()));

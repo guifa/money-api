@@ -9,8 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "customer")
@@ -70,6 +73,12 @@ public class Customer {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	
+	@JsonIgnore
+	@Transient
+	public Boolean isInactive() {
+		return !activeStatus;
 	}
 
 	@Override
