@@ -17,6 +17,7 @@ import com.guifa.money.api.event.CreatedResourceEvent;
 import com.guifa.money.api.model.Customer;
 import com.guifa.money.api.model.Transaction;
 import com.guifa.money.api.repository.TransactionRepository;
+import com.guifa.money.api.repository.filter.TransactionFilter;
 import com.guifa.money.api.service.exception.InactiveCustomerException;
 
 @Service
@@ -34,8 +35,8 @@ public class TransactionService {
 	@Autowired
 	private MessageSource messageSource;
 	
-	public List<Transaction> findAll() {
-		return transactionRepository.findAll();
+	public List<Transaction> search(TransactionFilter transactionFilter) {
+		return transactionRepository.search(transactionFilter);
 	}
 	
 	public Transaction save(Transaction transaction, HttpServletResponse response) {

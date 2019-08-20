@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.guifa.money.api.error.ErrorMessage;
 import com.guifa.money.api.model.Transaction;
+import com.guifa.money.api.repository.filter.TransactionFilter;
 import com.guifa.money.api.service.TransactionService;
 import com.guifa.money.api.service.exception.InactiveCustomerException;
 
@@ -33,8 +34,8 @@ public class TransactionResource {
 	private TransactionService transactionService;
 	
 	@GetMapping
-	public ResponseEntity<List<Transaction>> findAll() {
-		List<Transaction> transactions = transactionService.findAll();
+	public ResponseEntity<List<Transaction>> search(TransactionFilter transactionFilter) {
+		List<Transaction> transactions = transactionService.search(transactionFilter);
 		
 		return ResponseEntity.ok(transactions);
 	}
