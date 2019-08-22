@@ -35,6 +35,10 @@ public class TransactionSearchPredicate extends TransactionPredicate implements 
 		if (getTransactionFilter().getDueDateTo() != null) {
 			predicates.add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().get(Transaction_.DUE_DATE), getTransactionFilter().getDueDateTo()));
 		}
+		
+		if (getTransactionFilter().getAmountFrom() != null) {
+			predicates.add(getCriteriaBuilder().greaterThanOrEqualTo(getRoot().get(Transaction_.AMOUNT), getTransactionFilter().getAmountFrom()));
+		}
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
 
