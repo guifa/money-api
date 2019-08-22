@@ -1,6 +1,5 @@
 package com.guifa.money.api.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +10,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.guifa.money.api.event.CreatedResourceEvent;
@@ -35,8 +36,8 @@ public class TransactionService {
 	@Autowired
 	private MessageSource messageSource;
 	
-	public List<Transaction> search(TransactionFilter transactionFilter) {
-		return transactionRepository.search(transactionFilter);
+	public Page<Transaction> search(TransactionFilter transactionFilter, Pageable pageable) {
+		return transactionRepository.search(transactionFilter, pageable);
 	}
 	
 	public Transaction save(Transaction transaction, HttpServletResponse response) {

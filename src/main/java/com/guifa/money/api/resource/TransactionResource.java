@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,8 +36,8 @@ public class TransactionResource {
 	private TransactionService transactionService;
 	
 	@GetMapping
-	public ResponseEntity<List<Transaction>> search(TransactionFilter transactionFilter) {
-		List<Transaction> transactions = transactionService.search(transactionFilter);
+	public ResponseEntity<Page<Transaction>> search(TransactionFilter transactionFilter, Pageable pageable) {
+		Page<Transaction> transactions = transactionService.search(transactionFilter, pageable);
 		
 		return ResponseEntity.ok(transactions);
 	}
