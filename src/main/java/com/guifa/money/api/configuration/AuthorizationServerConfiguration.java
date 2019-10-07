@@ -24,14 +24,16 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 			.withClient("admin")
 			.secret("{noop}admin")
 			.scopes("read", "write")
-			.authorizedGrantTypes("password")
-			.accessTokenValiditySeconds(1800);
+			.authorizedGrantTypes("password", "refresh_token")
+			.accessTokenValiditySeconds(20)
+			.refreshTokenValiditySeconds(3600 * 24);
 	}
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.tokenStore(getTokenStore())
 			.accessTokenConverter(getJwtAccessTokenConverter())
+			.reuseRefreshTokens(false)
 			.authenticationManager(webSecurityConfiguration.authenticationManagerBean());
 	}
 	
