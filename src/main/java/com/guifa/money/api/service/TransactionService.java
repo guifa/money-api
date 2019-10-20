@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import com.guifa.money.api.event.CreatedResourceEvent;
 import com.guifa.money.api.model.Customer;
 import com.guifa.money.api.model.Transaction;
-import com.guifa.money.api.repository.TransactionRepository;
 import com.guifa.money.api.repository.filter.TransactionFilter;
+import com.guifa.money.api.repository.transaction.TransactionRepository;
 import com.guifa.money.api.service.exception.InactiveCustomerException;
 
 @Service

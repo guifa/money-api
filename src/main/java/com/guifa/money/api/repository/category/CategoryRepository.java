@@ -1,4 +1,4 @@
-package com.guifa.money.api.repository;
+package com.guifa.money.api.repository.category;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

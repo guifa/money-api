@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.guifa.money.api.event.CreatedResourceEvent;
 import com.guifa.money.api.model.Customer;
-import com.guifa.money.api.repository.CustomerRepository;
+import com.guifa.money.api.repository.customer.CustomerRepository;
 
 @Service
 public class CustomerService {

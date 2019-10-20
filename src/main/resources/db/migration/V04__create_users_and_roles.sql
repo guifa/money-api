@@ -1,0 +1,21 @@
+CREATE TABLE user (
+	id BIGINT(20) AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(150) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE role (
+	id BIGINT(20) AUTO_INCREMENT,
+    description VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE user_role (
+	user_id BIGINT(20) NOT NULL,
+    role_id BIGINT(20) NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (role_id) REFERENCES role(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
