@@ -31,7 +31,7 @@ public class CategoryResource {
 	
 	@GetMapping
 	@PreAuthorize("(hasRole('ROLE_ADMIN') or hasRole('ROLE_VIEWER')) and #oauth2.hasScope('read')")
-	public ResponseEntity<List<Category>> list() {
+	public ResponseEntity<List<Category>> findAll() {
 		List<Category> categories = categoryService.findAll();
 		
 		return ResponseEntity.ok(categories);
@@ -39,7 +39,7 @@ public class CategoryResource {
 	
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
-	public ResponseEntity<Category> create(@Valid @RequestBody Category category, HttpServletResponse response) {
+	public ResponseEntity<Category> save(@Valid @RequestBody Category category, HttpServletResponse response) {
 		Category savedCategory = categoryService.save(category, response);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
@@ -56,7 +56,7 @@ public class CategoryResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
-	public void delete(@PathVariable Long id) {
+	public void deleteById(@PathVariable Long id) {
 		categoryService.deleteById(id);
 	}
 	
