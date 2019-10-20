@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ public class TransactionResource {
 	private TransactionService transactionService;
 	
 	@GetMapping
+	@PreAuthorize("(hasRole('ROLE_ADMIN') or hasRole('ROLE_VIEWER')) and #oauth2.hasScope('read')")
 	public ResponseEntity<Page<Transaction>> search(TransactionFilter transactionFilter, Pageable pageable) {
 		Page<Transaction> transactions = transactionService.search(transactionFilter, pageable);
 		
@@ -43,6 +45,7 @@ public class TransactionResource {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public ResponseEntity<Transaction> save(@Valid @RequestBody Transaction transaction, HttpServletResponse response) {
 		Transaction savedTransaction = transactionService.save(transaction, response);
 		
@@ -50,6 +53,7 @@ public class TransactionResource {
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("(hasRole('ROLE_ADMIN') or hasRole('ROLE_VIEWER')) and #oauth2.hasScope('read')")
 	public ResponseEntity<Transaction> findById(@PathVariable Long id) {
 		Transaction transaction = transactionService.findById(id);
 		
@@ -58,11 +62,13 @@ public class TransactionResource {
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public void deleteById(@PathVariable Long id) {
 		transactionService.deleteById(id);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public ResponseEntity<Transaction> update(@Valid @RequestBody Transaction transaction, Long id) {
 		Transaction transactionToUpdate = transactionService.update(transaction, id);
 		

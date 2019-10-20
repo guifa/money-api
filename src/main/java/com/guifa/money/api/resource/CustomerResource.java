@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CustomerResource {
 	private CustomerService customerService;
 	
 	@GetMapping
+	@PreAuthorize("(hasRole('ROLE_ADMIN') or hasRole('ROLE_VIEWER')) and #oauth2.hasScope('read')")
 	public ResponseEntity<List<Customer>> findAll() {
 		List<Customer> customers = customerService.findAll();
 		
@@ -36,6 +38,7 @@ public class CustomerResource {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer, HttpServletResponse response) {
 		Customer savedCustomer = customerService.save(customer, response);
 		
@@ -43,6 +46,7 @@ public class CustomerResource {
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("(hasRole('ROLE_ADMIN') or hasRole('ROLE_VIEWER')) and #oauth2.hasScope('read')")
 	public ResponseEntity<Customer> findById(@PathVariable Long id) {
 		Customer customer = customerService.findById(id);
 		
@@ -51,11 +55,13 @@ public class CustomerResource {
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public void deleteById(@PathVariable Long id) {
 		customerService.deleteById(id);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public ResponseEntity<Customer> update(@PathVariable Long id, @Valid @RequestBody Customer customer) {
 		Customer customerToUpdate = customerService.update(customer, id);
 		
@@ -64,6 +70,7 @@ public class CustomerResource {
 	
 	@PutMapping("/{id}/active")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public void updateActiveStatus(@PathVariable Long id, @RequestBody Boolean activeStatus) {
 		customerService.updateActiveStatus(id, activeStatus);
 	}

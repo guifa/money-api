@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CategoryResource {
 	private CategoryService categoryService;
 	
 	@GetMapping
+	@PreAuthorize("(hasRole('ROLE_ADMIN') or hasRole('ROLE_VIEWER')) and #oauth2.hasScope('read')")
 	public ResponseEntity<List<Category>> list() {
 		List<Category> categories = categoryService.findAll();
 		
@@ -36,6 +38,7 @@ public class CategoryResource {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public ResponseEntity<Category> create(@Valid @RequestBody Category category, HttpServletResponse response) {
 		Category savedCategory = categoryService.save(category, response);
 		
@@ -43,6 +46,7 @@ public class CategoryResource {
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("(hasRole('ROLE_ADMIN') or hasRole('ROLE_VIEWER')) and #oauth2.hasScope('read')")
 	public ResponseEntity<Category> findById(@PathVariable Long id) {
 		Category category = categoryService.findById(id);
 		
@@ -51,11 +55,13 @@ public class CategoryResource {
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public void delete(@PathVariable Long id) {
 		categoryService.deleteById(id);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') and #oauth2.hasScope('write')")
 	public ResponseEntity<Category> update(@PathVariable Long id, @Valid @RequestBody Category category) {
 		Category categoryToUpdate = categoryService.update(category, id);
 		

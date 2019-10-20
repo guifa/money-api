@@ -21,11 +21,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-			.withClient("admin")
-			.secret("{noop}admin")
+			.withClient("angular")
+			.secret("{noop}angular")
 			.scopes("read", "write")
 			.authorizedGrantTypes("password", "refresh_token")
-			.accessTokenValiditySeconds(20)
+			.accessTokenValiditySeconds(900)
 			.refreshTokenValiditySeconds(3600 * 24);
 	}
 	
