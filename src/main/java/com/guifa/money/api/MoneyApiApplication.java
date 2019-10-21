@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import com.guifa.money.api.configuration.property.MoneyApiProperty;
+import com.guifa.money.api.configuration.properties.MoneyApiProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(MoneyApiProperty.class)
+@EnableConfigurationProperties(MoneyApiProperties.class)
 public class MoneyApiApplication {
 
 	public static void main(String[] args) {
